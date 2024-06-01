@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import HeaderComponent from "./_components/HeaderComponent";
+import { ColorModeScript } from "@chakra-ui/react";
+import Chakra from "./_components/Chakra";
+import theme from "@/styles/theme";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,7 +20,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <head>
+        <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+      </head>
+      <body className={inter.className}>
+        <Chakra>
+          <HeaderComponent />
+          {children}
+        </Chakra>
+      </body>
     </html>
   );
 }
