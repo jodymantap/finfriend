@@ -19,10 +19,19 @@ import {
   ExternalLinkIcon,
   EditIcon,
 } from "@chakra-ui/icons";
+import { useRouter } from "next/navigation";
+import { removeCredentials } from "../../actions";
 
-export default function HeaderComponent() {
+export default function HeaderComponent({ sheetURL }: { sheetURL: string }) {
+  const router = useRouter();
   const { colorMode, toggleColorMode } = useColorMode();
   const bg = useColorModeValue("white", "gray.800");
+  const removeCookies = async () => {
+    const res = await removeCredentials();
+    if (res) {
+      router.push("auth");
+    }
+  };
 
   return (
     <Box
@@ -52,8 +61,12 @@ export default function HeaderComponent() {
             variant="outline"
           />
           <MenuList>
-            <MenuItem icon={<ExternalLinkIcon />}>Open Sheet</MenuItem>
-            <MenuItem icon={<EditIcon />}>Change Account</MenuItem>
+            <MenuItem as="a" href={sheetURL} icon={<ExternalLinkIcon />}>
+              Open Sheet
+            </MenuItem>
+            <MenuItem onClick={removeCookies} icon={<EditIcon />}>
+              Change Account
+            </MenuItem>
           </MenuList>
         </Menu>
       </Flex>
