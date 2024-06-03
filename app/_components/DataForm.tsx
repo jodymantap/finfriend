@@ -67,7 +67,15 @@ export default function DataForm() {
         duration: 9000,
         isClosable: true,
       });
-      actions.resetForm();
+      actions.resetForm({
+        values: {
+          // Reset other form values here
+          item: "",
+          transactionType: "",
+          transactionCategory: "",
+          nominal: 0,
+        },
+      });
       setLoading(false);
       return;
     }
@@ -159,12 +167,14 @@ export default function DataForm() {
                 <FormControl isInvalid={!!(meta.touched && meta.error)}>
                   <FormLabel>Nominal</FormLabel>
                   <NumberInput
+                    {...field}
                     defaultValue={0}
                     onChange={(valueString) =>
                       form.setFieldValue(field.name, valueString)
                     }
+                    key={form.initialValues.nominal}
                   >
-                    <NumberInputField {...field} />
+                    <NumberInputField />
                   </NumberInput>
                   <FormErrorMessage>{meta.error}</FormErrorMessage>
                 </FormControl>
