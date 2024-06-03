@@ -47,15 +47,15 @@ export default function AuthForm() {
     const res = await setCredentials(values);
     if (res) {
       router.push("/");
-    } else {
-      toast({
-        title: "Login failed.",
-        description: "Failed to set cookie.",
-        status: "error",
-        duration: 9000,
-        isClosable: true,
-      });
+      return;
     }
+    toast({
+      title: "Login failed!",
+      description: "Failed to set cookie.",
+      status: "error",
+      duration: 9000,
+      isClosable: true,
+    });
   };
 
   return (

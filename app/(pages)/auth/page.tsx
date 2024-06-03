@@ -3,7 +3,7 @@ import styles from "../../page.module.css";
 
 export default function Auth() {
   return (
-    <main className={styles.main}>
+    <main className={styles.main} style={{ alignItems: "center" }}>
       <AuthForm />
     </main>
   );
