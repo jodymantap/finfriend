@@ -14,9 +14,12 @@ interface TransactionData {
 }
 
 export async function setCredentials(values: Credentials) {
-  cookies().set("sheetURL", values.sheetURL);
-  cookies().set("apiEndpoint", values.apiEndpoint);
-  cookies().set("apiToken", values.apiToken);
+  cookies().set("sheetURL", values.sheetURL, { maxAge: 8000000, secure: true });
+  cookies().set("apiEndpoint", values.apiEndpoint, {
+    maxAge: 8000000,
+    secure: true,
+  });
+  cookies().set("apiToken", values.apiToken, { maxAge: 8000000, secure: true });
   return values;
 }
 

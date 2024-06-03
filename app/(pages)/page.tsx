@@ -5,7 +5,7 @@ import DataForm from "../_components/DataForm";
 export default function Home() {
   return (
     <main className={styles.main}>
-      <Box style={{ alignItems: "center" }}>
+      <Box>
         <DataForm />
       </Box>
     </main>
