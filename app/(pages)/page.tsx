@@ -1,4 +1,4 @@
-import { Box, Heading, Stat, StatLabel, StatNumber } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import styles from "../page.module.css";
 import DataForm from "../_components/DataForm";
 

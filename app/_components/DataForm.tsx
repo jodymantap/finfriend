@@ -11,8 +11,10 @@ import {
   NumberInputField,
   Button,
   Box,
+  Link,
   useToast,
 } from "@chakra-ui/react";
+import { ArrowForwardIcon } from "@chakra-ui/icons";
 import * as yup from "yup";
 import { postData } from "../../actions";
 
@@ -187,10 +189,14 @@ export default function DataForm() {
             type="submit"
             colorScheme="purple"
             mt="4"
+            mb="4"
             width="100%"
           >
             Save
           </Button>
+          <Link color="purple.500" fontSize="sm" href="/recent">
+            See recent transactions <ArrowForwardIcon />
+          </Link>
         </Form>
       </Formik>
     </>
