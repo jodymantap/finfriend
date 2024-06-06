@@ -185,7 +185,7 @@ export default function DataForm() {
           </Box>
           <Button
             isLoading={loading}
-            loadingText="Saving data"
+            loadingText="Saving..."
             type="submit"
             colorScheme="purple"
             mt="4"
