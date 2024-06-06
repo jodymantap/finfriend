@@ -9,4 +9,8 @@ export function middleware(request: NextRequest) {
   if (!token && request.nextUrl.pathname === "/") {
     return NextResponse.redirect(new URL("/auth", request.url));
   }
+
+  if (!token && request.nextUrl.pathname === "/recent") {
+    return NextResponse.redirect(new URL("/auth", request.url));
+  }
 }
