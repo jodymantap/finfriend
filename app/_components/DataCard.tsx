@@ -73,7 +73,7 @@ export default function DataCard({
               fontSize="sm"
               color={getStatus(transaction.transactionCategory)}
             >
-              {getSign(transaction.transactionCategory)}Rp 5.000.000
+              {getSign(transaction.transactionCategory)} {transaction.nominal}
             </Text>
           </Flex>
         </CardBody>
