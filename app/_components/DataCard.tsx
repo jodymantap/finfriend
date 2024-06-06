@@ -1,48 +1,81 @@
 import React from "react";
-import { Box, Card, CardBody, Flex, Tag, Text } from "@chakra-ui/react";
+import { Card, CardBody, Flex, Tag, Text } from "@chakra-ui/react";
 
-export default function DataCard({ status }: { status: string }) {
-  const getStatus = (status: string) => {
-    if (status === "pemasukan") {
-      return "green.400";
+export default function DataCard({
+  transaction,
+}: {
+  transaction: Record<string, string>;
+}) {
+  const getStatus = (category: string) => {
+    switch (category) {
+      case "Pemasukan":
+        return "green.400";
+      case "Pengeluaran":
+        return "red.400";
+      case "Konversi":
+        return "blue.400";
+      default:
+        break;
     }
-    if (status === "pengeluaran") {
-      return "red.400";
-    }
-    return "blue.400";
   };
 
-  const getSign = (status: string) => {
-    if (status === "pemasukan") {
-      return "+ ";
+  const getSign = (category: string) => {
+    switch (category) {
+      case "Pemasukan":
+        return "+";
+      case "Pengeluaran":
+        return "-";
+      case "Konversi":
+        return;
+      default:
+        break;
     }
-    if (status === "pengeluaran") {
-      return "- ";
+  };
+
+  const getType = (type: string) => {
+    switch (type) {
+      case "Tunai":
+        return "Cash";
+      case "Non Tunai":
+        return "Non Cash";
+      case "Tarik Tunai":
+        return "Withdrawal";
+      case "Setor Tunai":
+        return "Deposit";
+      default:
+        break;
     }
-    return "";
+  };
+
+  const truncateString = (str: string) => {
+    return str.length > 14 ? str.slice(0, 14) + "..." : str;
   };
   return (
     <>
       <Card>
         <CardBody>
-          <Box>
-            <Flex justify="space-between" align="flex-start">
+          <Flex justify="space-between" align="center">
+            <Flex
+              gap="2"
+              direction="column"
+              justify="space-between"
+              align="flex-start"
+            >
               <Tag size="sm" variant="solid" colorScheme="purple">
-                Cash
+                {getType(transaction.transactionType)}
               </Tag>
-              <Text lineHeight="1" fontSize="xl" color={getStatus(status)}>
-                {getSign(status)}Rp 20.000
-              </Text>
-            </Flex>
-            <Flex mt="3" justify="space-between" align="center">
               <Text lineHeight="1" fontSize="sm" fontWeight="semibold">
-                Item Name
-              </Text>
-              <Text lineHeight="1" fontSize="xs" fontWeight="200">
-                dd/mm/yy
+                {truncateString(transaction.item)}
               </Text>
             </Flex>
-          </Box>
+            <Text
+              lineHeight="1"
+              fontSize="sm"
+              color={getStatus(transaction.transactionCategory)}
+            >
+              {getSign(transaction.transactionCategory)}Rp 5.000.000
+            </Text>
+          </Flex>
         </CardBody>
       </Card>
     </>

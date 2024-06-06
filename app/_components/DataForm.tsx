@@ -195,7 +195,7 @@ export default function DataForm() {
             Save
           </Button>
           <Link color="purple.500" fontSize="sm" href="/recent">
-            See recent transactions <ArrowForwardIcon />
+            See daily transactions <ArrowForwardIcon />
           </Link>
         </Form>
       </Formik>

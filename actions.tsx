@@ -30,19 +30,20 @@ export async function removeCredentials() {
   return true;
 }
 
-// export async function getData() {
-//   const url = cookies().get("apiEndpoint") as string | undefined;
-//   const token = cookies().get("apiToken") as string | undefined;
-//   if (url && token) {
-//     const res = await fetch(url, {
-//       headers: {
-//         Authorization: token,
-//       },
-//     });
-//     const response = res.json();
-//     return response;
-//   }
-// }
+export async function getData() {
+  const url = cookies().get("apiEndpoint")?.value as string | undefined;
+  const token = cookies().get("apiToken")?.value as string | undefined;
+  const today = new Date().toLocaleDateString("en-GB");
+  if (url && token) {
+    const res = await fetch(url + `/search?Tanggal=${today}`, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
+    const response = res.json();
+    return response;
+  }
+}
 
 export async function postData(values: TransactionData) {
   const url = cookies().get("apiEndpoint")?.value as string | undefined;
