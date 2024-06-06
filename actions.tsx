@@ -33,7 +33,9 @@ export async function removeCredentials() {
 export async function getData() {
   const url = cookies().get("apiEndpoint")?.value as string | undefined;
   const token = cookies().get("apiToken")?.value as string | undefined;
-  const today = new Date().toLocaleDateString("en-GB");
+  const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const options = { timeZone: userTimeZone };
+  const today = new Date().toLocaleDateString("en-GB", options);
   if (url && token) {
     const res = await fetch(url + `/search?Tanggal=${today}`, {
       headers: {
