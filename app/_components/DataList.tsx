@@ -23,11 +23,8 @@ export default function DataList() {
         } else if (item.Pengeluaran) {
           transactionCategory = "Pengeluaran";
           nominal = item.Pengeluaran;
-        } else if (item.Konversi === "Setor Tunai") {
-          transactionCategory = "Setor Tunai";
-          nominal = item.Konversi;
-        } else if (item.Konversi === "Tarik Tunai") {
-          transactionCategory = "Tarik Tunai";
+        } else if (item.Konversi) {
+          transactionCategory = "Konversi";
           nominal = item.Konversi;
         }
 
