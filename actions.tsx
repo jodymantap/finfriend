@@ -50,8 +50,9 @@ export async function postData(values: TransactionData) {
   const url = cookies().get("apiEndpoint")?.value as string | undefined;
   const token = cookies().get("apiToken")?.value as string | undefined;
   const formData = new FormData();
+  const options = { timeZone: "Asia/Jakarta" };
   formData.append("No", `=IF(ROW()=2; 1; INDEX(A:A; ROW()-1) + 1)`);
-  formData.append("Tanggal", new Date().toLocaleDateString("en-GB"));
+  formData.append("Tanggal", new Date().toLocaleDateString("en-GB", options));
   formData.append("Keterangan", values.item);
   formData.append("Sifat", values.transactionType);
   formData.append(values.transactionCategory, values.nominal.toString());
