@@ -6,6 +6,7 @@ import { ColorModeScript } from "@chakra-ui/react";
 import Chakra from "./_components/Chakra";
 import theme from "@/styles/theme";
 import { useServerCookies } from "@/utils/useServerCookies";
+import ServiceWorkerRegistration from "./_components/ServiceWorkerRegistration";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,6 +27,7 @@ export default async function RootLayout({
         <ColorModeScript initialColorMode={theme.config.initialColorMode} />
       </head>
       <body className={inter.className}>
+        <ServiceWorkerRegistration />
         <Chakra>
           <HeaderComponent sheetURL={cookies.sheetURL} />
           {children}
