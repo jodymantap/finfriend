@@ -48,27 +48,29 @@ export default function HeaderComponent({ sheetURL }: { sheetURL: string }) {
         <Spacer />
         <IconButton
           bg="transparent"
-          mr={2}
           onClick={toggleColorMode}
           aria-label="Swith color mode"
           icon={colorMode === "dark" ? <SunIcon /> : <MoonIcon />}
         />
-        <Menu>
-          <MenuButton
-            as={IconButton}
-            aria-label="Options"
-            icon={<HamburgerIcon />}
-            variant="outline"
-          />
-          <MenuList>
-            <MenuItem as="a" href={sheetURL} icon={<ExternalLinkIcon />}>
-              Open Sheet
-            </MenuItem>
-            <MenuItem onClick={removeCookies} icon={<EditIcon />}>
-              Change Account
-            </MenuItem>
-          </MenuList>
-        </Menu>
+        {sheetURL ? (
+          <Menu>
+            <MenuButton
+              as={IconButton}
+              aria-label="Options"
+              icon={<HamburgerIcon />}
+              variant="outline"
+              ml={2}
+            />
+            <MenuList>
+              <MenuItem as="a" href={sheetURL} icon={<ExternalLinkIcon />}>
+                Open Sheet
+              </MenuItem>
+              <MenuItem onClick={removeCookies} icon={<EditIcon />}>
+                Change Account
+              </MenuItem>
+            </MenuList>
+          </Menu>
+        ) : null}
       </Flex>
     </Box>
   );
