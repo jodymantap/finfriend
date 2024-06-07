@@ -37,11 +37,13 @@ export default function DataList() {
         };
       });
     }
+
     async function getTransactionList() {
       try {
         const result = await getData();
         const transformedResult = transformData(result);
         setData(transformedResult.reverse());
+        console.log("WOYYY");
       } catch (error) {
         toast({
           title: "Fetching data failed!",
@@ -55,6 +57,36 @@ export default function DataList() {
       }
     }
     getTransactionList();
+    const revalidateCache = async () => {
+      try {
+        const response = await fetch("/api/revalidate");
+        if (!response.ok) {
+          throw new Error("Failed to revalidate cache");
+        }
+        console.log("wpyyy");
+        await getTransactionList(); // Re-fetch data after revalidating cache
+      } catch (error) {
+        toast({
+          title: "Revalidation failed!",
+          description: "Failed to revalidate cache.",
+          status: "error",
+          duration: 9000,
+          isClosable: true,
+        });
+      }
+    };
+    const handleOnline = () => {
+      console.log("Detected online status");
+      revalidateCache();
+    };
+
+    window.addEventListener("online", handleOnline);
+    console.log("Adding online event listener");
+
+    return () => {
+      console.log("Removing online event listener");
+      window.removeEventListener("online", handleOnline);
+    };
   }, []);
   return (
     <Flex gap="2" width="100%" direction="column">

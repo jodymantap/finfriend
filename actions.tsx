@@ -1,6 +1,6 @@
 "use server";
 import { cookies } from "next/headers";
-
+import { revalidateTag } from "next/cache";
 interface Credentials {
   sheetURL: string;
   apiEndpoint: string;
@@ -46,6 +46,8 @@ export async function getData() {
       headers: {
         Authorization: "Bearer " + token,
       },
+      cache: "force-cache",
+      next: { tags: ["transaction"] },
     });
     const response = res.json();
     return response;
@@ -91,4 +93,8 @@ export async function postData(values: TransactionData) {
       return null;
     }
   }
+}
+
+export async function revalidateTransactionCache() {
+  await revalidateTag("transaction");
 }
