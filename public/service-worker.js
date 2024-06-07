@@ -15,10 +15,25 @@ self.addEventListener("install", function (event) {
   );
 });
 
-self.addEventListener("fetch", function (event) {
+self.addEventListener("fetch", (event) => {
+  const { request } = event;
+
+  // Skip caching for non-GET requests and non-http/https requests
+  if (request.method !== "GET" || !request.url.startsWith("http")) {
+    return;
+  }
+
   event.respondWith(
-    caches.match(event.request).then(function (response) {
-      return response || fetch(event.request);
+    caches.match(request).then((cachedResponse) => {
+      return (
+        cachedResponse ||
+        fetch(request).then((networkResponse) => {
+          return caches.open(CACHE_NAME).then((cache) => {
+            cache.put(request, networkResponse.clone());
+            return networkResponse;
+          });
+        })
+      );
     })
   );
 });
