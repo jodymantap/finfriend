@@ -50,3 +50,38 @@ self.addEventListener("activate", function (event) {
     })
   );
 });
+
+self.addEventListener("fetch", function (event) {
+  const { request } = event;
+
+  if (request.url.includes("/recent")) {
+    // Dynamic content: Cache and update strategy
+    event.respondWith(
+      caches.match(request).then((cachedResponse) => {
+        const fetchPromise = fetch(request).then((networkResponse) => {
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(request, networkResponse.clone());
+          });
+          return networkResponse;
+        });
+        // Return cached response if available, else fetch from network
+        return cachedResponse || fetchPromise;
+      })
+    );
+  } else {
+    // Static content: Cache first strategy
+    event.respondWith(
+      caches.match(request).then((cachedResponse) => {
+        return (
+          cachedResponse ||
+          fetch(request).then((networkResponse) => {
+            return caches.open(CACHE_NAME).then((cache) => {
+              cache.put(request, networkResponse.clone());
+              return networkResponse;
+            });
+          })
+        );
+      })
+    );
+  }
+});
