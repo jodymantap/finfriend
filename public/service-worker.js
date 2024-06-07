@@ -4,9 +4,6 @@ const CACHE_NAME = "offline-cache-v1";
 const urlsToCache = [
   "/",
   "/recent",
-  "/app/globals.css",
-  "/app/page.module.css",
-  "/styles/theme.css",
   // Add more routes and assets as needed
 ];
 
