@@ -43,7 +43,6 @@ export default function DataList() {
         const result = await getData();
         const transformedResult = transformData(result);
         setData(transformedResult.reverse());
-        console.log("WOYYY");
       } catch (error) {
         toast({
           title: "Fetching data failed!",
@@ -63,7 +62,6 @@ export default function DataList() {
         if (!response.ok) {
           throw new Error("Failed to revalidate cache");
         }
-        console.log("wpyyy");
         await getTransactionList(); // Re-fetch data after revalidating cache
       } catch (error) {
         toast({
@@ -76,15 +74,12 @@ export default function DataList() {
       }
     };
     const handleOnline = () => {
-      console.log("Detected online status");
       revalidateCache();
     };
 
     window.addEventListener("online", handleOnline);
-    console.log("Adding online event listener");
 
     return () => {
-      console.log("Removing online event listener");
       window.removeEventListener("online", handleOnline);
     };
   }, []);
