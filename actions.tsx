@@ -86,11 +86,11 @@ export async function postData(values: TransactionData) {
         throw new Error("Network response was not ok");
       }
 
-      const baseURL = process.env.VERCEL_URL
-        ? `https://${process.env.VERCEL_URL}`
-        : "http://localhost:3000";
+      const revalidateResult = await revalidateTransactionCache();
+      if (!revalidateResult.success) {
+        throw new Error(revalidateResult.message);
+      }
 
-      await fetch(`${baseURL}/api/revalidate`);
       const data = await res.json();
       return data;
     } catch (error) {
@@ -101,5 +101,13 @@ export async function postData(values: TransactionData) {
 }
 
 export async function revalidateTransactionCache() {
-  await revalidateTag("transaction");
+  try {
+    await revalidateTag("transaction");
+    return { success: true };
+  } catch (error) {
+    return {
+      success: false,
+      message: "Failed to revalidate transaction cache: " + error,
+    };
+  }
 }
