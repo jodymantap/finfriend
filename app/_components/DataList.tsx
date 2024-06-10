@@ -56,32 +56,6 @@ export default function DataList() {
       }
     }
     getTransactionList();
-    const revalidateCache = async () => {
-      try {
-        const response = await fetch("/api/revalidate");
-        if (!response.ok) {
-          throw new Error("Failed to revalidate cache");
-        }
-        await getTransactionList(); // Re-fetch data after revalidating cache
-      } catch (error) {
-        toast({
-          title: "Revalidation failed!",
-          description: "Failed to revalidate cache.",
-          status: "error",
-          duration: 9000,
-          isClosable: true,
-        });
-      }
-    };
-    const handleOnline = () => {
-      revalidateCache();
-    };
-
-    window.addEventListener("online", handleOnline);
-
-    return () => {
-      window.removeEventListener("online", handleOnline);
-    };
   }, []);
   return (
     <Flex gap="2" width="100%" direction="column">

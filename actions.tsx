@@ -85,7 +85,7 @@ export async function postData(values: TransactionData) {
       if (!res.ok) {
         throw new Error("Network response was not ok");
       }
-
+      await fetch("/api/revalidate");
       const data = await res.json();
       return data;
     } catch (error) {
