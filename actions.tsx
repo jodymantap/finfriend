@@ -17,14 +17,17 @@ export async function setCredentials(values: Credentials) {
   cookies().set("sheetURL", values.sheetURL, {
     maxAge: 8000000,
     secure: true,
+    httpOnly: true,
   });
   cookies().set("apiEndpoint", values.apiEndpoint, {
     maxAge: 8000000,
     secure: true,
+    httpOnly: true,
   });
   cookies().set("apiToken", values.apiToken, {
     maxAge: 8000000,
     secure: true,
+    httpOnly: true,
   });
   return values;
 }
@@ -110,4 +113,17 @@ export async function revalidateTransactionCache() {
       message: "Failed to revalidate transaction cache: " + error,
     };
   }
+}
+
+export async function setBalance(account: string, cash: string) {
+  cookies().set("accountBalance", account, {
+    maxAge: 8000000,
+    secure: true,
+    httpOnly: true,
+  });
+  cookies().set("cashBalance", cash, {
+    maxAge: 8000000,
+    secure: true,
+    httpOnly: true,
+  });
 }

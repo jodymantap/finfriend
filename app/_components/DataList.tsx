@@ -1,11 +1,27 @@
 "use client";
 import { useState, useEffect } from "react";
-import { Flex, Link, Skeleton, Stack, useToast, Text } from "@chakra-ui/react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Scrollbar, Autoplay } from "swiper/modules";
+import "swiper/css";
+import {
+  Flex,
+  Link,
+  Skeleton,
+  Stack,
+  useToast,
+  Text,
+  Card,
+  CardBody,
+} from "@chakra-ui/react";
 import { ArrowBackIcon } from "@chakra-ui/icons";
-import { getData } from "@/actions";
+import { getData, setBalance } from "@/actions";
 import DataCard from "./DataCard";
 
-export default function DataList() {
+export default function DataList({
+  balance,
+}: {
+  balance: Record<string, string>;
+}) {
   const toast = useToast();
   const [data, setData] = useState<Array<Record<string, string>>>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -43,6 +59,9 @@ export default function DataList() {
         const result = await getData();
         const transformedResult = transformData(result);
         setData(transformedResult.reverse());
+        if (result?.length > 0) {
+          setBalance(result[0].Rekening, result[0].Tunai);
+        }
       } catch (error) {
         toast({
           title: "Fetching data failed!",
@@ -62,6 +81,45 @@ export default function DataList() {
       <Link mb="2" color="purple.500" fontSize="sm" href="/">
         <ArrowBackIcon /> Back
       </Link>
+      <Swiper
+        scrollbar={{
+          hide: true,
+        }}
+        autoplay={{
+          delay: 3000,
+          disableOnInteraction: false,
+        }}
+        modules={[Scrollbar, Autoplay]}
+        spaceBetween={10}
+        style={{ width: "100%" }}
+      >
+        <SwiperSlide>
+          <Card bgGradient="linear(to-r, purple.500, pink.500)">
+            <CardBody>
+              <Text color="white" fontWeight="300" fontSize="xs">
+                Account Balance
+              </Text>
+              <Text color="white" fontWeight="600" fontSize="xl">
+                {balance.account}
+              </Text>
+            </CardBody>
+          </Card>
+        </SwiperSlide>
+        <SwiperSlide>
+          {" "}
+          <Card bgGradient="linear(to-r, purple.500, pink.500)">
+            <CardBody>
+              <Text color="white" fontWeight="300" fontSize="xs">
+                Cash Balance
+              </Text>
+              <Text color="white" fontWeight="600" fontSize="xl">
+                {balance.cash}
+              </Text>
+            </CardBody>
+          </Card>
+        </SwiperSlide>
+      </Swiper>
+
       {loading ? (
         <Stack>
           <Skeleton height="82px"></Skeleton>
