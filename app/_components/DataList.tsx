@@ -61,7 +61,6 @@ export default function DataList({
         const transformedResult = transformData(result);
         setData(transformedResult.reverse());
         if (result?.length > 0) {
-          console.log(result[result.length - 1]);
           setBalance(
             result[result.length - 1].Rekening,
             result[result.length - 1].Tunai
