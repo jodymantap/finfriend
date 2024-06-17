@@ -85,75 +85,82 @@ export default function DataList({
     getTransactionList();
   }, []);
   return (
-    <Flex gap="2" width="100%" direction="column">
-      <Box bgColor={bgColor[colorMode]} position="sticky" top="87px" zIndex="2">
-        <Box mb="4" mt="4">
-          <Link color="purple.500" fontSize="sm" href="/">
-            <ArrowBackIcon /> Back
-          </Link>
-        </Box>
-        <Skeleton
-          isLoaded={!loading}
-          startColor="purple.500"
-          endColor="pink.500"
+    <Box height="calc(100vh - 230px)" position="relative">
+      <Flex gap="2" width="100%" direction="column">
+        <Box
+          bgColor={bgColor[colorMode]}
+          position="sticky"
+          top="87px"
+          zIndex="2"
         >
-          <Swiper
-            scrollbar={{
-              hide: true,
-            }}
-            autoplay={{
-              delay: 3000,
-              disableOnInteraction: false,
-            }}
-            modules={[Scrollbar, Autoplay]}
-            spaceBetween={10}
-            style={{ width: "100%" }}
+          <Box mb="4" mt="4">
+            <Link color="purple.500" fontSize="sm" href="/">
+              <ArrowBackIcon /> Back
+            </Link>
+          </Box>
+          <Skeleton
+            isLoaded={!loading}
+            startColor="purple.500"
+            endColor="pink.500"
           >
-            <SwiperSlide>
-              <Card bgGradient="linear(to-r, purple.500, pink.500)">
-                <CardBody>
-                  <Text color="white" fontWeight="300" fontSize="xs">
-                    Account Balance
-                  </Text>
-                  <Text color="white" fontWeight="600" fontSize="xl">
-                    {balance.account}
-                  </Text>
-                </CardBody>
-              </Card>
-            </SwiperSlide>
-            <SwiperSlide>
-              {" "}
-              <Card bgGradient="linear(to-r, purple.500, pink.500)">
-                <CardBody>
-                  <Text color="white" fontWeight="300" fontSize="xs">
-                    Cash Balance
-                  </Text>
-                  <Text color="white" fontWeight="600" fontSize="xl">
-                    {balance.cash}
-                  </Text>
-                </CardBody>
-              </Card>
-            </SwiperSlide>
-          </Swiper>
-        </Skeleton>
-      </Box>
+            <Swiper
+              scrollbar={{
+                hide: true,
+              }}
+              autoplay={{
+                delay: 3000,
+                disableOnInteraction: false,
+              }}
+              modules={[Scrollbar, Autoplay]}
+              spaceBetween={10}
+              style={{ width: "100%" }}
+            >
+              <SwiperSlide>
+                <Card bgGradient="linear(to-r, purple.500, pink.500)">
+                  <CardBody>
+                    <Text color="white" fontWeight="300" fontSize="xs">
+                      Account Balance
+                    </Text>
+                    <Text color="white" fontWeight="600" fontSize="xl">
+                      {balance.account}
+                    </Text>
+                  </CardBody>
+                </Card>
+              </SwiperSlide>
+              <SwiperSlide>
+                {" "}
+                <Card bgGradient="linear(to-r, purple.500, pink.500)">
+                  <CardBody>
+                    <Text color="white" fontWeight="300" fontSize="xs">
+                      Cash Balance
+                    </Text>
+                    <Text color="white" fontWeight="600" fontSize="xl">
+                      {balance.cash}
+                    </Text>
+                  </CardBody>
+                </Card>
+              </SwiperSlide>
+            </Swiper>
+          </Skeleton>
+        </Box>
 
-      {loading ? (
-        <Stack>
-          <Skeleton height="82px"></Skeleton>
-          <Skeleton height="82px"></Skeleton>
-          <Skeleton height="82px"></Skeleton>
-          <Skeleton height="82px"></Skeleton>
-          <Skeleton height="82px"></Skeleton>
-          <Skeleton height="82px"></Skeleton>
-        </Stack>
-      ) : data && data.length > 0 ? (
-        data?.map((transaction) => (
-          <DataCard transaction={transaction} key={transaction.id} />
-        ))
-      ) : (
-        <Text>No transaction for today.</Text>
-      )}
-    </Flex>
+        {loading ? (
+          <Stack>
+            <Skeleton height="82px"></Skeleton>
+            <Skeleton height="82px"></Skeleton>
+            <Skeleton height="82px"></Skeleton>
+            <Skeleton height="82px"></Skeleton>
+            <Skeleton height="82px"></Skeleton>
+            <Skeleton height="82px"></Skeleton>
+          </Stack>
+        ) : data && data.length > 0 ? (
+          data?.map((transaction) => (
+            <DataCard transaction={transaction} key={transaction.id} />
+          ))
+        ) : (
+          <Text>No transaction for today.</Text>
+        )}
+      </Flex>
+    </Box>
   );
 }
