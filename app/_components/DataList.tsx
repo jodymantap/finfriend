@@ -13,6 +13,8 @@ import {
   Text,
   Card,
   CardBody,
+  Box,
+  useColorMode,
 } from "@chakra-ui/react";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import { getData, setBalance } from "@/actions";
@@ -26,6 +28,8 @@ export default function DataList({
   const toast = useToast();
   const [data, setData] = useState<Array<Record<string, string>>>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const { colorMode } = useColorMode();
+  const bgColor = { light: "white", dark: "gray.800" };
   useEffect(() => {
     function transformData(
       data: Array<Record<string, string>>
@@ -82,47 +86,57 @@ export default function DataList({
   }, []);
   return (
     <Flex gap="2" width="100%" direction="column">
-      <Link mb="2" color="purple.500" fontSize="sm" href="/">
-        <ArrowBackIcon /> Back
-      </Link>
-      <Swiper
-        scrollbar={{
-          hide: true,
-        }}
-        autoplay={{
-          delay: 3000,
-          disableOnInteraction: false,
-        }}
-        modules={[Scrollbar, Autoplay]}
-        spaceBetween={10}
-        style={{ width: "100%" }}
-      >
-        <SwiperSlide>
-          <Card bgGradient="linear(to-r, purple.500, pink.500)">
-            <CardBody>
-              <Text color="white" fontWeight="300" fontSize="xs">
-                Account Balance
-              </Text>
-              <Text color="white" fontWeight="600" fontSize="xl">
-                {balance.account}
-              </Text>
-            </CardBody>
-          </Card>
-        </SwiperSlide>
-        <SwiperSlide>
-          {" "}
-          <Card bgGradient="linear(to-r, purple.500, pink.500)">
-            <CardBody>
-              <Text color="white" fontWeight="300" fontSize="xs">
-                Cash Balance
-              </Text>
-              <Text color="white" fontWeight="600" fontSize="xl">
-                {balance.cash}
-              </Text>
-            </CardBody>
-          </Card>
-        </SwiperSlide>
-      </Swiper>
+      <Box bgColor={bgColor[colorMode]} position="sticky" top="87px" zIndex="2">
+        <Box mb="4" mt="4">
+          <Link color="purple.500" fontSize="sm" href="/">
+            <ArrowBackIcon /> Back
+          </Link>
+        </Box>
+        <Skeleton
+          isLoaded={!loading}
+          startColor="purple.500"
+          endColor="pink.500"
+        >
+          <Swiper
+            scrollbar={{
+              hide: true,
+            }}
+            autoplay={{
+              delay: 3000,
+              disableOnInteraction: false,
+            }}
+            modules={[Scrollbar, Autoplay]}
+            spaceBetween={10}
+            style={{ width: "100%" }}
+          >
+            <SwiperSlide>
+              <Card bgGradient="linear(to-r, purple.500, pink.500)">
+                <CardBody>
+                  <Text color="white" fontWeight="300" fontSize="xs">
+                    Account Balance
+                  </Text>
+                  <Text color="white" fontWeight="600" fontSize="xl">
+                    {balance.account}
+                  </Text>
+                </CardBody>
+              </Card>
+            </SwiperSlide>
+            <SwiperSlide>
+              {" "}
+              <Card bgGradient="linear(to-r, purple.500, pink.500)">
+                <CardBody>
+                  <Text color="white" fontWeight="300" fontSize="xs">
+                    Cash Balance
+                  </Text>
+                  <Text color="white" fontWeight="600" fontSize="xl">
+                    {balance.cash}
+                  </Text>
+                </CardBody>
+              </Card>
+            </SwiperSlide>
+          </Swiper>
+        </Skeleton>
+      </Box>
 
       {loading ? (
         <Stack>
