@@ -85,7 +85,7 @@ export default function DataList({
     getTransactionList();
   }, []);
   return (
-    <Box height="calc(100vh - 230px)" position="relative">
+    <Box height="65vh" position="relative">
       <Flex gap="2" width="100%" direction="column">
         <Box
           bgColor={bgColor[colorMode]}
