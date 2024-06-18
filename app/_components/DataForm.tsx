@@ -71,7 +71,7 @@ export default function DataForm() {
           item: "",
           transactionType: "",
           transactionCategory: "",
-          nominal: 0,
+          nominal: "0",
         },
       });
       setLoading(false);
@@ -95,7 +95,7 @@ export default function DataForm() {
           item: "",
           transactionType: "",
           transactionCategory: "",
-          nominal: 0,
+          nominal: "0",
         }}
         onSubmit={(values, actions) => {
           postTransaction(values, actions);

@@ -16,15 +16,16 @@ import {
 } from "@chakra-ui/react";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 import * as yup from "yup";
-import { postData } from "../../actions";
 import { TransactionData } from "@/types";
 
 export default function DataformDemo({
   setStep,
   setDemoTransactions,
+  setDemoBalance,
 }: {
   setStep: React.Dispatch<React.SetStateAction<number>>;
   setDemoTransactions: React.Dispatch<React.SetStateAction<TransactionData[]>>;
+  setDemoBalance: React.Dispatch<React.SetStateAction<Record<string, number>>>;
 }) {
   const [loading, setLoading] = useState<boolean>(false);
   const validationSchema = yup.object({
@@ -37,7 +38,7 @@ export default function DataformDemo({
       .string()
       .required("Transaction Type is required")
       .oneOf(
-        ["Tunai", "Non Tunai", "Tarik Tunai", "Setor Tunai"],
+        ["Cash", "Non Cash", "Withdrawal", "Deposit"],
         "Invalid Transaction Type"
       )
       .label("Transaction Type"),
@@ -45,7 +46,7 @@ export default function DataformDemo({
       .string()
       .required("Transaction Category is required")
       .oneOf(
-        ["Pemasukan", "Pengeluaran", "Konversi"],
+        ["Income", "Outcome", "Conversion"],
         "Invalid Transaction Category"
       )
       .label("Transaction Category"),
@@ -64,6 +65,50 @@ export default function DataformDemo({
 
     setTimeout(() => {
       setDemoTransactions((items) => [...items, values]);
+      const numNominal = parseInt(values.nominal);
+      if (values.transactionCategory === "Conversion") {
+        if (values.transactionType === "Withdrawal") {
+          setDemoBalance((item) => ({
+            account: item.account - numNominal,
+            cash: item.cash + numNominal,
+          }));
+        }
+
+        if (values.transactionType === "Deposit") {
+          setDemoBalance((item) => ({
+            account: item.account + numNominal,
+            cash: item.cash - numNominal,
+          }));
+        }
+      }
+
+      if (values.transactionCategory === "Income") {
+        if (values.transactionType === "Cash") {
+          setDemoBalance((item) => ({
+            account: item.account,
+            cash: item.cash + numNominal,
+          }));
+        } else {
+          setDemoBalance((item) => ({
+            account: item.account + numNominal,
+            cash: item.cash,
+          }));
+        }
+      }
+
+      if (values.transactionCategory === "Outcome") {
+        if (values.transactionType === "Cash") {
+          setDemoBalance((item) => ({
+            account: item.account,
+            cash: item.cash - numNominal,
+          }));
+        } else {
+          setDemoBalance((item) => ({
+            account: item.account - numNominal,
+            cash: item.cash,
+          }));
+        }
+      }
 
       toast({
         title: "Success!",
@@ -78,12 +123,12 @@ export default function DataformDemo({
           item: "",
           transactionType: "",
           transactionCategory: "",
-          nominal: 0,
+          nominal: "0",
         },
       });
 
       setLoading(false);
-    }, 2000);
+    }, 1000);
   };
 
   return (
@@ -94,7 +139,7 @@ export default function DataformDemo({
           item: "",
           transactionType: "",
           transactionCategory: "",
-          nominal: 0,
+          nominal: "0",
         }}
         onSubmit={(values, actions) => {
           postTransaction(values, actions);
@@ -127,10 +172,10 @@ export default function DataformDemo({
                   <FormControl isInvalid={!!(meta.touched && meta.error)}>
                     <FormLabel>Transaction Type</FormLabel>
                     <Select {...field} placeholder="Select Transaction Type">
-                      <option value="Tunai">Cash</option>
-                      <option value="Non Tunai">Non Cash</option>
-                      <option value="Tarik Tunai">Withdrawal</option>
-                      <option value="Setor Tunai">Deposit</option>
+                      <option value="Cash">Cash</option>
+                      <option value="Non Cash">Non Cash</option>
+                      <option value="Withdrawal">Withdrawal</option>
+                      <option value="Deposit">Deposit</option>
                     </Select>
                     <FormErrorMessage>{meta.error}</FormErrorMessage>
                   </FormControl>
@@ -148,9 +193,9 @@ export default function DataformDemo({
                       {...field}
                       placeholder="Select Transaction Category"
                     >
-                      <option value="Pemasukan">Income</option>
-                      <option value="Pengeluaran">Outcome</option>
-                      <option value="Konversi">Conversion</option>
+                      <option value="Income">Income</option>
+                      <option value="Outcome">Outcome</option>
+                      <option value="Conversion">Conversion</option>
                     </Select>
                     <FormErrorMessage>{meta.error}</FormErrorMessage>
                   </FormControl>

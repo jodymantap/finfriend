@@ -11,6 +11,7 @@ import {
   MenuItem,
   useColorMode,
   useColorModeValue,
+  Tag,
 } from "@chakra-ui/react";
 import {
   SunIcon,
@@ -19,11 +20,12 @@ import {
   ExternalLinkIcon,
   EditIcon,
 } from "@chakra-ui/icons";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { removeCredentials } from "../../actions";
 
 export default function HeaderComponent({ sheetURL }: { sheetURL: string }) {
   const router = useRouter();
+  const pathname = usePathname();
   const { colorMode, toggleColorMode } = useColorMode();
   const bg = useColorModeValue("white", "gray.800");
   const removeCookies = async () => {
@@ -46,13 +48,19 @@ export default function HeaderComponent({ sheetURL }: { sheetURL: string }) {
       <Flex justify="space-between" align="center">
         <Image boxSize="25px" src="/logo.png" alt="App Logo" />
         <Spacer />
+        {pathname === "/demo" ? (
+          <Tag size="sm" variant="solid" colorScheme="purple">
+            Demo
+          </Tag>
+        ) : null}
         <IconButton
           bg="transparent"
           onClick={toggleColorMode}
           aria-label="Swith color mode"
           icon={colorMode === "dark" ? <SunIcon /> : <MoonIcon />}
+          ml={2}
         />
-        {sheetURL ? (
+        {sheetURL && pathname !== "/demo" ? (
           <Menu>
             <MenuButton
               as={IconButton}
@@ -67,6 +75,26 @@ export default function HeaderComponent({ sheetURL }: { sheetURL: string }) {
               </MenuItem>
               <MenuItem onClick={removeCookies} icon={<EditIcon />}>
                 Change Account
+              </MenuItem>
+            </MenuList>
+          </Menu>
+        ) : null}
+
+        {pathname === "/demo" ? (
+          <Menu>
+            <MenuButton
+              as={IconButton}
+              aria-label="Options"
+              icon={<HamburgerIcon />}
+              variant="outline"
+              ml={2}
+            />
+            <MenuList>
+              <MenuItem
+                onClick={() => router.push("/upgrade")}
+                icon={<ExternalLinkIcon />}
+              >
+                Open Sheet
               </MenuItem>
             </MenuList>
           </Menu>

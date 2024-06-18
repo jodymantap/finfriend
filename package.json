@@ -19,12 +19,14 @@
     "react": "^18",
     "react-dom": "^18",
     "swiper": "^11.1.4",
+    "uuid": "^10.0.0",
     "yup": "^1.4.0"
   },
   "devDependencies": {
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/uuid": "^9.0.8",
     "typescript": "^5"
   }
 }
