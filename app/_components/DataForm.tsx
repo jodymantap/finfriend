@@ -18,6 +18,7 @@ import { ArrowForwardIcon } from "@chakra-ui/icons";
 import * as yup from "yup";
 import { postData } from "../../actions";
 import { TransactionData } from "@/types";
+import NextLink from "next/link";
 
 export default function DataForm() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -189,7 +190,7 @@ export default function DataForm() {
           >
             Save
           </Button>
-          <Link color="purple.500" fontSize="sm" href="/recent">
+          <Link as={NextLink} color="purple.500" fontSize="sm" href="/recent">
             See daily transactions <ArrowForwardIcon />
           </Link>
         </Form>

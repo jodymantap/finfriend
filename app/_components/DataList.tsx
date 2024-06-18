@@ -19,6 +19,7 @@ import {
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import { getData, setBalance } from "@/actions";
 import DataCard from "./DataCard";
+import NextLink from "next/link";
 
 export default function DataList({
   balance,
@@ -94,7 +95,7 @@ export default function DataList({
           zIndex="2"
         >
           <Box mb="4" mt="4">
-            <Link color="purple.500" fontSize="sm" href="/">
+            <Link as={NextLink} color="purple.500" fontSize="sm" href="/">
               <ArrowBackIcon /> Back
             </Link>
           </Box>
