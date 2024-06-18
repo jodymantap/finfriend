@@ -38,7 +38,7 @@ export default function Welcome() {
         <Link href="/demo" passHref>
           <Button colorScheme="purple">Try Demo</Button>
         </Link>
-        <Link style={{ marginLeft: "16px" }} href="/auth" passHref>
+        <Link style={{ marginLeft: "8px" }} href="/auth" passHref>
           <Button colorScheme="purple" variant="outline">
             Log In
           </Button>
