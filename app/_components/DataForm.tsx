@@ -17,6 +17,7 @@ import {
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 import * as yup from "yup";
 import { postData } from "../../actions";
+import { TransactionData } from "@/types";
 
 export default function DataForm() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -49,12 +50,6 @@ export default function DataForm() {
       .label("Nominal"),
   });
   const toast = useToast();
-  interface TransactionData {
-    item: string;
-    transactionType: string;
-    transactionCategory: string;
-    nominal: number;
-  }
   const postTransaction = async (
     values: TransactionData,
     actions: FormikHelpers<TransactionData>

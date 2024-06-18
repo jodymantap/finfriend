@@ -18,6 +18,7 @@ import {
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import * as yup from "yup";
 import { setCredentials } from "../../actions";
+import { Credentials } from "@/types";
 
 export default function AuthForm() {
   const [isTokenHidden, toggleTokenHidden] = useState<boolean>(true);
@@ -38,11 +39,7 @@ export default function AuthForm() {
   });
   const toast = useToast();
   const router = useRouter();
-  interface Credentials {
-    sheetURL: string;
-    apiEndpoint: string;
-    apiToken: string;
-  }
+
   const setCookies = async (values: Credentials) => {
     const res = await setCredentials(values);
     if (res) {

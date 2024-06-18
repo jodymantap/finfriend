@@ -4,3 +4,8 @@ export interface TransactionData {
   transactionCategory: string;
   nominal: number;
 }
+export interface Credentials {
+  sheetURL: string;
+  apiEndpoint: string;
+  apiToken: string;
+}

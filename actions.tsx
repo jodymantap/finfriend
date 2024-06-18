@@ -1,17 +1,7 @@
 "use server";
 import { cookies } from "next/headers";
 import { revalidateTag } from "next/cache";
-interface Credentials {
-  sheetURL: string;
-  apiEndpoint: string;
-  apiToken: string;
-}
-interface TransactionData {
-  item: string;
-  transactionType: string;
-  transactionCategory: string;
-  nominal: number;
-}
+import { Credentials, TransactionData } from "./types";
 
 export async function setCredentials(values: Credentials) {
   cookies().set("sheetURL", values.sheetURL, {
