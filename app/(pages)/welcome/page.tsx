@@ -7,21 +7,32 @@ import {
   Card,
   CardBody,
   Image,
+  Highlight,
 } from "@chakra-ui/react";
+import Link from "next/link";
 
 export default function Welcome() {
   return (
     <main className={styles.main}>
       <Box className="hero" mb="12">
         <Heading size="lg" mb="4">
-          Meet{" "}
-          <span style={{ color: "#805AD5", textDecoration: "underline" }}>
-            <em>Finfriend</em>
-          </span>
-          , your personal finance friend &#x1F44B;
+          <Highlight
+            query={["Finfriend"]}
+            styles={{
+              px: "2",
+              py: "1",
+              rounded: "full",
+              bg: "purple.500",
+              color: "white",
+            }}
+          >
+            Meet Finfriend, your personal finance friend &#x1F44B;
+          </Highlight>
         </Heading>
         <Image src="mockup.png" borderRadius="10" alt="App Mockup" mb="4" />
-        <Button colorScheme="purple">Try Demo</Button>
+        <Link href="/demo" passHref>
+          <Button colorScheme="purple">Try Demo</Button>
+        </Link>
       </Box>
 
       <Box className="feature">
