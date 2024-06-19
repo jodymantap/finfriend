@@ -23,6 +23,12 @@ export async function setCredentials(values: Credentials) {
 }
 
 export async function removeCredentials() {
+  const revalidateResult = await revalidateTransactionCache();
+
+  if (!revalidateResult.success) {
+    throw new Error(revalidateResult.message);
+  }
+
   cookies().delete("sheetURL");
   cookies().delete("apiEndpoint");
   cookies().delete("apiToken");
