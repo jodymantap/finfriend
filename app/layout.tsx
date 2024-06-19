@@ -10,6 +10,8 @@ import { useServerCookies } from "@/utils/useServerCookies";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
+  applicationName: "Finfriend",
+  manifest: "/manifest.json",
   title: "Finfriend - Your Financial Friend",
   description: "Personal financial web app integrated with Google Sheet API",
 };
