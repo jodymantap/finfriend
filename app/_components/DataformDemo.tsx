@@ -156,7 +156,7 @@ export default function DataformDemo({
   };
 
   const extractMerchantName = (qrData: string) => {
-    const regex = /59(\d{2})(.{1,99})/;
+    const regex = /59(\d{2})([^5][^\d]{1,99})/;
     const match = qrData.match(regex);
     if (match) {
       const length = parseInt(match[1], 10);
