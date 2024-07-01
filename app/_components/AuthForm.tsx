@@ -6,7 +6,6 @@ import {
   FormControl,
   FormLabel,
   FormErrorMessage,
-  FormHelperText,
   Input,
   InputGroup,
   InputRightElement,
@@ -14,11 +13,13 @@ import {
   Button,
   Box,
   useToast,
+  Link,
 } from "@chakra-ui/react";
-import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+import { ViewIcon, ViewOffIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 import * as yup from "yup";
 import { setCredentials } from "../../actions";
 import { Credentials } from "@/types";
+import NextLink from "next/link";
 
 export default function AuthForm() {
   const [isTokenHidden, toggleTokenHidden] = useState<boolean>(true);
@@ -129,9 +130,12 @@ export default function AuthForm() {
               )}
             </Field>
           </Box>
-          <Button type="submit" colorScheme="purple" mt="4" width="100%">
+          <Button type="submit" colorScheme="purple" mt="4" mb="4" width="100%">
             Log In
           </Button>
+          <Link as={NextLink} color="purple.500" fontSize="sm" href="/demo">
+            Try the demo <ArrowForwardIcon />
+          </Link>
         </Form>
       </Formik>
     </>
