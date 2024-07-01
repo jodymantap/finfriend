@@ -28,12 +28,7 @@ import {
   ModalBody,
   useDisclosure,
 } from "@chakra-ui/react";
-import {
-  IBoundingBox,
-  IDetectedBarcode,
-  IPoint,
-  Scanner,
-} from "@yudiel/react-qr-scanner";
+import { IDetectedBarcode, Scanner } from "@yudiel/react-qr-scanner";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 import * as yup from "yup";
 import { TransactionData } from "@/types";

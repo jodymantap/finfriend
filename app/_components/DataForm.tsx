@@ -1,6 +1,13 @@
 "use client";
-import { useState } from "react";
-import { Formik, Field, Form, FieldProps, type FormikHelpers } from "formik";
+import { useState, useRef } from "react";
+import {
+  Formik,
+  Field,
+  Form,
+  FieldProps,
+  type FormikHelpers,
+  FormikProps,
+} from "formik";
 import {
   FormControl,
   FormLabel,
@@ -11,9 +18,17 @@ import {
   NumberInputField,
   Button,
   Box,
+  Tag,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  useDisclosure,
   Link,
   useToast,
 } from "@chakra-ui/react";
+import { IDetectedBarcode, Scanner } from "@yudiel/react-qr-scanner";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 import * as yup from "yup";
 import { postData } from "../../actions";
@@ -22,6 +37,9 @@ import NextLink from "next/link";
 
 export default function DataForm() {
   const [loading, setLoading] = useState<boolean>(false);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const formikRef = useRef<FormikProps<TransactionData>>(null);
+
   const validationSchema = yup.object({
     item: yup //Keterangan
       .string()
@@ -85,6 +103,36 @@ export default function DataForm() {
       isClosable: true,
     });
     setLoading(false);
+  };
+
+  const extractMerchantName = (qrData: string) => {
+    const regex = /59(\d{2})([^5][^\d]{1,99})/;
+    const match = qrData.match(regex);
+    if (match) {
+      const length = parseInt(match[1], 10);
+      const merchantName = match[2].substring(0, length);
+      return merchantName;
+    }
+
+    toast({
+      title: "Process failed!",
+      description: "Failed to get the merchant name.",
+      status: "error",
+      duration: 9000,
+      isClosable: true,
+    });
+    return null;
+  };
+
+  const fillForm = (result: IDetectedBarcode[]) => {
+    const merchantName = extractMerchantName(result[0].rawValue);
+    if (formikRef.current) {
+      formikRef.current?.setFieldValue("item", merchantName);
+      formikRef.current?.setFieldValue("transactionType", "Non Cash");
+      formikRef.current?.setFieldValue("transactionCategory", "Outcome");
+    }
+
+    onClose();
   };
 
   return (
@@ -185,16 +233,40 @@ export default function DataForm() {
             type="submit"
             colorScheme="purple"
             mt="4"
-            mb="4"
+            mb="2"
             width="100%"
           >
             Save
+          </Button>
+          <Button
+            isLoading={loading}
+            onClick={onOpen}
+            type="button"
+            colorScheme="purple"
+            mb="4"
+            width="100%"
+            variant="outline"
+          >
+            Scan QRIS{" "}
+            <Tag ml="2" size="sm" variant="solid" colorScheme="purple">
+              New
+            </Tag>
           </Button>
           <Link as={NextLink} color="purple.500" fontSize="sm" href="/recent">
             See daily transactions <ArrowForwardIcon />
           </Link>
         </Form>
       </Formik>
+
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay></ModalOverlay>
+        <ModalContent minHeight="500px">
+          <ModalHeader>Scan QRIS</ModalHeader>
+          <ModalBody>
+            <Scanner onScan={(result) => fillForm(result)} />
+          </ModalBody>
+        </ModalContent>
+      </Modal>
     </>
   );
 }
