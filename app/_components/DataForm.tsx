@@ -138,6 +138,7 @@ export default function DataForm() {
   return (
     <>
       <Formik
+        innerRef={formikRef}
         validationSchema={validationSchema}
         initialValues={{
           item: "",
