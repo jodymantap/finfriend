@@ -128,8 +128,8 @@ export default function DataForm() {
     const merchantName = extractMerchantName(result[0].rawValue);
     if (formikRef.current) {
       formikRef.current?.setFieldValue("item", merchantName);
-      formikRef.current?.setFieldValue("transactionType", "Non Cash");
-      formikRef.current?.setFieldValue("transactionCategory", "Outcome");
+      formikRef.current?.setFieldValue("transactionType", "Non Tunai");
+      formikRef.current?.setFieldValue("transactionCategory", "Pengeluaran");
     }
 
     onClose();
