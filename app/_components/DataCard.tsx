@@ -106,7 +106,7 @@ export default function DataCard({
         >
           <div
             style={{
-              backgroundColor: "rgba(0, 0, 0, 0.4)",
+              backgroundColor: "rgba(107, 70, 193, 0.4)",
               display: `${
                 transaction.id === selectedCard?.id ? "flex" : "none"
               }`,
