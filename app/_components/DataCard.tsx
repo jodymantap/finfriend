@@ -134,7 +134,7 @@ export default function DataCard({
                 cursor: "pointer",
               }}
             >
-              <EditIcon />
+              <EditIcon color="white" />
             </div>
           </div>
         </Slide>
