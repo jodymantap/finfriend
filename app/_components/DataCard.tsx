@@ -1,15 +1,7 @@
 "use client";
 
 import React from "react";
-import {
-  Card,
-  CardBody,
-  Flex,
-  Tag,
-  Text,
-  IconButton,
-  Slide,
-} from "@chakra-ui/react";
+import { Card, CardBody, Flex, Tag, Text, Slide } from "@chakra-ui/react";
 import { EditIcon } from "@chakra-ui/icons";
 
 export default function DataCard({
@@ -19,8 +11,10 @@ export default function DataCard({
   editTransaction,
 }: {
   transaction: Record<string, string>;
-  selectedCard: Record<string, string>;
-  setSelectedCard: React.Dispatch<React.SetStateAction<Record<string, string>>>;
+  selectedCard?: Record<string, string>;
+  setSelectedCard: React.Dispatch<
+    React.SetStateAction<Record<string, string> | undefined>
+  >;
   editTransaction: () => void;
 }) {
   const getStatus = (category: string) => {
@@ -67,11 +61,16 @@ export default function DataCard({
   const truncateString = (str: string) => {
     return str.length > 14 ? str.slice(0, 14) + "..." : str;
   };
+
+  const handleCardClick = () => {
+    setSelectedCard(
+      transaction.id === selectedCard?.id ? undefined : transaction
+    );
+  };
   return (
     <>
       <Card
-        cursor="pointer"
-        onClick={() => setSelectedCard(transaction)}
+        onClick={() => handleCardClick()}
         position="relative"
         overflow="hidden"
       >
@@ -102,31 +101,30 @@ export default function DataCard({
 
         <Slide
           direction="right"
-          in={transaction.id === selectedCard.id}
-          style={{ position: "absolute", top: 0, right: 0 }}
+          in={transaction.id === selectedCard?.id}
+          style={{ position: "absolute", top: 0, right: 0, zIndex: 1 }}
         >
           <div
+            onClick={(e) => {
+              e.stopPropagation();
+              editTransaction();
+            }}
             style={{
               backgroundColor: "#6B46C1",
               display: `${
-                transaction.id === selectedCard.id ? "flex" : "none"
+                transaction.id === selectedCard?.id ? "flex" : "none"
               }`,
               height: "100%",
               position: "absolute",
               top: 0,
               right: 0,
-              padding: "0px 8px 0px 8px",
+              padding: "0px 16px 0px 16px",
               alignItems: "center",
               borderTopRightRadius: "0.375rem",
               borderBottomRightRadius: "0.375rem",
             }}
           >
-            <IconButton
-              onClick={editTransaction}
-              icon={<EditIcon />}
-              aria-label="Edit"
-              size="sm"
-            />
+            <EditIcon />
           </div>
         </Slide>
       </Card>

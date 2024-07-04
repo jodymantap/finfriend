@@ -31,18 +31,20 @@ export default function DataList({
   const router = useRouter();
   const [data, setData] = useState<Array<Record<string, string>>>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [toEditData, setToEditData] = useState<Record<string, string>>({});
+  const [toEditData, setToEditData] = useState<Record<string, string>>();
   const { colorMode } = useColorMode();
   const bgColor = { light: "white", dark: "gray.800" };
 
   const editTransaction = () => {
-    router.push(
-      `/?id=${toEditData.id}&item=${encodeURIComponent(
-        toEditData.item
-      )}&transactionType=${toEditData.transactionType}&transactionCategory=${
-        toEditData.transactionCategory
-      }&nominal=${toEditData.nominal}`
-    );
+    if (toEditData) {
+      router.push(
+        `/?id=${toEditData.id}&item=${encodeURIComponent(
+          toEditData.item
+        )}&transactionType=${toEditData.transactionType}&transactionCategory=${
+          toEditData.transactionCategory
+        }&nominal=${toEditData.nominal}`
+      );
+    }
   };
   useEffect(() => {
     function transformData(
