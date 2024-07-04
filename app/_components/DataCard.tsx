@@ -105,26 +105,37 @@ export default function DataCard({
           style={{ position: "absolute", top: 0, right: 0, zIndex: 1 }}
         >
           <div
-            onClick={(e) => {
-              e.stopPropagation();
-              editTransaction();
-            }}
             style={{
-              backgroundColor: "#6B46C1",
+              backgroundColor: "rgba(0, 0, 0, 0.4)",
               display: `${
                 transaction.id === selectedCard?.id ? "flex" : "none"
               }`,
               height: "100%",
+              width: "100%",
               position: "absolute",
               top: 0,
               right: 0,
-              padding: "0px 16px 0px 16px",
               alignItems: "center",
-              borderTopRightRadius: "0.375rem",
-              borderBottomRightRadius: "0.375rem",
+              justifyContent: "flex-end",
+              borderRadius: "0.375rem",
             }}
           >
-            <EditIcon />
+            <div
+              onClick={(e) => {
+                e.stopPropagation();
+                editTransaction();
+              }}
+              style={{
+                backgroundColor: "#6B46C1",
+                padding: "0px 24px 0px 24px",
+                height: "100%",
+                display: "flex",
+                alignItems: "center",
+                cursor: "pointer",
+              }}
+            >
+              <EditIcon />
+            </div>
           </div>
         </Slide>
       </Card>
