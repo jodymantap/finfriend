@@ -99,6 +99,44 @@ export async function postData(values: TransactionData) {
   }
 }
 
+export async function updateData(values: TransactionData) {
+  const url = cookies().get("apiEndpoint")?.value as string | undefined;
+  const token = cookies().get("apiToken")?.value as string | undefined;
+
+  if (url && token) {
+    try {
+      const res = await fetch(url + `/No/${values.id}`, {
+        method: "PATCH",
+        headers: {
+          Authorization: "Bearer " + token,
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          Keterangan: values.item,
+          Sifat: values.transactionType,
+          [values.transactionCategory]: values.nominal,
+        }),
+      });
+
+      if (!res.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const revalidateResult = await revalidateTransactionCache();
+      if (!revalidateResult.success) {
+        throw new Error(revalidateResult.message);
+      }
+
+      const data = await res.json();
+      return data;
+    } catch (error) {
+      console.error("There was a problem with the fetch operation:", error);
+      return null;
+    }
+  }
+}
+
 export async function revalidateTransactionCache() {
   try {
     await revalidateTag("transaction");

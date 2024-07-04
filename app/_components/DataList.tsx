@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Scrollbar, Autoplay } from "swiper/modules";
+import { useRouter } from "next/navigation";
 import "swiper/css";
 import "swiper/css/scrollbar";
 import {
@@ -27,10 +28,22 @@ export default function DataList({
   balance: Record<string, string>;
 }) {
   const toast = useToast();
+  const router = useRouter();
   const [data, setData] = useState<Array<Record<string, string>>>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [toEditData, setToEditData] = useState<Record<string, string>>({});
   const { colorMode } = useColorMode();
   const bgColor = { light: "white", dark: "gray.800" };
+
+  const editTransaction = () => {
+    router.push(
+      `/?id=${toEditData.id}&item=${encodeURIComponent(
+        toEditData.item
+      )}&transactionType=${toEditData.transactionType}&transactionCategory=${
+        toEditData.transactionCategory
+      }&nominal=${toEditData.nominal}`
+    );
+  };
   useEffect(() => {
     function transformData(
       data: Array<Record<string, string>>
@@ -156,7 +169,13 @@ export default function DataList({
           </Stack>
         ) : data && data.length > 0 ? (
           data?.map((transaction) => (
-            <DataCard transaction={transaction} key={transaction.id} />
+            <DataCard
+              transaction={transaction}
+              key={transaction.id}
+              selectedCard={toEditData}
+              setSelectedCard={setToEditData}
+              editTransaction={editTransaction}
+            />
           ))
         ) : (
           <Text>No transaction for today.</Text>

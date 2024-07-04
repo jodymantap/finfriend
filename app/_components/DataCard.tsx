@@ -1,10 +1,27 @@
+"use client";
+
 import React from "react";
-import { Card, CardBody, Flex, Tag, Text } from "@chakra-ui/react";
+import {
+  Card,
+  CardBody,
+  Flex,
+  Tag,
+  Text,
+  IconButton,
+  Slide,
+} from "@chakra-ui/react";
+import { EditIcon } from "@chakra-ui/icons";
 
 export default function DataCard({
   transaction,
+  selectedCard,
+  setSelectedCard,
+  editTransaction,
 }: {
   transaction: Record<string, string>;
+  selectedCard: Record<string, string>;
+  setSelectedCard: React.Dispatch<React.SetStateAction<Record<string, string>>>;
+  editTransaction: () => void;
 }) {
   const getStatus = (category: string) => {
     switch (category) {
@@ -52,7 +69,12 @@ export default function DataCard({
   };
   return (
     <>
-      <Card>
+      <Card
+        cursor="pointer"
+        onClick={() => setSelectedCard(transaction)}
+        position="relative"
+        overflow="hidden"
+      >
         <CardBody>
           <Flex justify="space-between" align="center">
             <Flex
@@ -77,6 +99,36 @@ export default function DataCard({
             </Text>
           </Flex>
         </CardBody>
+
+        <Slide
+          direction="right"
+          in={transaction.id === selectedCard.id}
+          style={{ position: "absolute", top: 0, right: 0 }}
+        >
+          <div
+            style={{
+              backgroundColor: "#6B46C1",
+              display: `${
+                transaction.id === selectedCard.id ? "flex" : "none"
+              }`,
+              height: "100%",
+              position: "absolute",
+              top: 0,
+              right: 0,
+              padding: "0px 8px 0px 8px",
+              alignItems: "center",
+              borderTopRightRadius: "0.375rem",
+              borderBottomRightRadius: "0.375rem",
+            }}
+          >
+            <IconButton
+              onClick={editTransaction}
+              icon={<EditIcon />}
+              aria-label="Edit"
+              size="sm"
+            />
+          </div>
+        </Slide>
       </Card>
     </>
   );

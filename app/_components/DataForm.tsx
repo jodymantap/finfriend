@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   Formik,
   Field,
@@ -31,14 +31,43 @@ import {
 import { IDetectedBarcode, Scanner } from "@yudiel/react-qr-scanner";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 import * as yup from "yup";
-import { postData } from "../../actions";
+import { postData, updateData } from "../../actions";
 import { TransactionData } from "@/types";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import NextLink from "next/link";
 
 export default function DataForm() {
   const [loading, setLoading] = useState<boolean>(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const formikRef = useRef<FormikProps<TransactionData>>(null);
+  const searchParams = useSearchParams();
+  const currentId = searchParams.get("id");
+  const router = useRouter();
+
+  useEffect(() => {
+    if (formikRef.current && currentId) {
+      const currentItem = decodeURIComponent(searchParams.get("item") || "");
+      const currentTransactionType = searchParams.get("transactionType");
+      const currentTransactionCategory = searchParams.get(
+        "transactionCategory"
+      );
+      const currentNominal = searchParams.get("nominal");
+      formikRef.current?.setFieldValue("item", currentItem);
+      formikRef.current?.setFieldValue(
+        "transactionType",
+        currentTransactionType
+      );
+      formikRef.current?.setFieldValue(
+        "transactionCategory",
+        currentTransactionCategory
+      );
+      formikRef.current?.setFieldValue(
+        "nominal",
+        currentNominal?.replace(/[^\d]/g, "")
+      );
+    }
+  }, [searchParams]);
 
   const validationSchema = yup.object({
     item: yup //Keterangan
@@ -74,11 +103,20 @@ export default function DataForm() {
     actions: FormikHelpers<TransactionData>
   ) => {
     setLoading(true);
-    const res = await postData(values);
+    let res;
+    if (currentId) {
+      values.id = currentId;
+      res = await updateData(values);
+    } else {
+      res = await postData(values);
+    }
+
     if (res) {
       toast({
         title: "Success!",
-        description: "Transaction added successfully.",
+        description: `Transaction ${
+          currentId ? "updated" : "added"
+        } successfully.`,
         status: "success",
         duration: 9000,
         isClosable: true,
@@ -93,6 +131,9 @@ export default function DataForm() {
         },
       });
       setLoading(false);
+      if (currentId) {
+        router.push("/recent");
+      }
       return;
     }
     toast({
@@ -230,14 +271,14 @@ export default function DataForm() {
           </Box>
           <Button
             isLoading={loading}
-            loadingText="Saving..."
+            loadingText={currentId ? "Updating..." : "Saving..."}
             type="submit"
             colorScheme="purple"
             mt="4"
             mb="2"
             width="100%"
           >
-            Save
+            {currentId ? "Update" : "Save"}
           </Button>
           <Button
             isLoading={loading}
