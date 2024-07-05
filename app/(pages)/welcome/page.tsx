@@ -1,3 +1,4 @@
+import InstallSection from "@/app/_components/InstallSection";
 import styles from "../../page.module.css";
 import {
   Box,
@@ -86,6 +87,7 @@ export default function Welcome() {
           </CardBody>
         </Card>
       </Box>
+      <InstallSection />
     </main>
   );
 }

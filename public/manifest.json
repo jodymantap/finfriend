@@ -21,5 +21,6 @@
   "lang": "en-US",
   "name": "Finfriend - Your Financial Friend",
   "short_name": "Finfriend",
-  "start_url": "/"
+  "start_url": "/",
+  "scope": "/"
 }
